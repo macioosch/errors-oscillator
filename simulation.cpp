@@ -8,15 +8,16 @@ Simulation::Simulation()
 }
 
 void Simulation::euler(double t0, double x0, double v0,
-                       double (*a)(double, double, double), double &x1, double &v1)
+                       double (*a)(parameters, double, double, double), double &x1, double &v1)
 {
-    v1 = v0 +p.Dt *(*a)( t0, x0, v0);
+    v1 = v0 +p.Dt *(*a)( p, t0, x0, v0);
     x1 = x0 +p.Dt *v0;
 }
 
 void Simulation::reset(parameters p0)
 {
     p = p0;
+    simulationLock = false;
 }
 
 void Simulation::step()
@@ -39,7 +40,7 @@ void Simulation::step()
     simulationLock = false;
 }
 
-double Simulation::acceleration(double t0, double x0, double v0)
+double Simulation::acceleration(parameters p, double t0, double x0, double v0)
 {
-    return - p.k *pow( x0,2) - p.b*v0 + p.F0 *sin( p.w0*t0);
+    return (-p.k*x0 -p.b*v0 +p.F0*sin(p.w0*t0))/p.m;
 }

@@ -1,4 +1,13 @@
+# C++
 *.o
-*.pro.user
-oscillator-errors
+
+# vim
 *.swp
+
+# Qt
+*.pro.user
+moc_*
+ui_*
+
+# this project
+oscillator-errors

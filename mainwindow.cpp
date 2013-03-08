@@ -1,3 +1,4 @@
+#include <math.h>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "simulation.h"
@@ -12,6 +13,12 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(toggleDamping(bool)));
     connect(ui->forceCheckBox, SIGNAL(clicked(bool)),
             this, SLOT(toggleForce(bool)));
+    connect(ui->resetPushButton, SIGNAL(clicked()),
+            this, SLOT(resetSimulation()));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)),
+            ui->visualisationWidget, SLOT(tabChanged(int)));
+
+    resetSimulation();
 }
 
 MainWindow::~MainWindow()
@@ -35,15 +42,17 @@ void MainWindow::toggleForce(bool value)
 
 void MainWindow::resetSimulation()
 {
-    struct parameters p;
+    parameters p;
     p.t = 0;
-    p.x =  ui->x0HorizontalSlider->Position()/100.;
-    p.v =  ui->v0HorizontalSlider->Position()/100.;
-    p.b =  ui-> bHorizontalSlider->Position()/100.;
-    p.F0 = ui->f0HorizontalSlider->Position()/100.;
-    p.w0 = ui->w0HorizontalSlider->Position()/100.;
-    p.k =  ui-> kHorizontalSlider->Position()/100.;
-    p.m =  ui-> mHorizontalSlider->Position()/100.;
-    p.Dt = ui->dtHorizontalSlider->Position()/100.;
+    p.x =  ui->x0HorizontalSlider->sliderPosition()/100.;
+    p.v =  ui->v0HorizontalSlider->sliderPosition()/100.;
+    p.b =  pow10( ui->bHorizontalSlider->sliderPosition()/100.);
+    p.F0 = ui->f0HorizontalSlider->sliderPosition()/100.;
+    p.w0 = ui->w0HorizontalSlider->sliderPosition()/100.;
+    p.k =  ui-> kHorizontalSlider->sliderPosition()/100.;
+    p.m =  ui-> mHorizontalSlider->sliderPosition()/100.;
+    p.Dt = pow10( ui->dtHorizontalSlider->sliderPosition()/10.);
     p.algorithm = EULER;
+
+    ui->visualisationWidget->resetSimulation(p);
 }
