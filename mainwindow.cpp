@@ -1,7 +1,6 @@
 #include <math.h>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "simulation.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->tabWidget, SIGNAL(currentChanged(int)),
             ui->visualisationWidget, SLOT(tabChanged(int)));
 
+    connect(ui->x0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+
+    updateLabels();
     resetSimulation();
 }
 
@@ -42,17 +44,35 @@ void MainWindow::toggleForce(bool value)
 
 void MainWindow::resetSimulation()
 {
-    parameters p;
+    ui->visualisationWidget->resetSimulation(p);
+}
+
+void MainWindow::updateLabels()
+{
+    // values
     p.t = 0;
     p.x =  ui->x0HorizontalSlider->sliderPosition()/100.;
     p.v =  ui->v0HorizontalSlider->sliderPosition()/100.;
-    p.b =  pow10( ui->bHorizontalSlider->sliderPosition()/100.);
-    p.F0 = ui->f0HorizontalSlider->sliderPosition()/100.;
-    p.w0 = ui->w0HorizontalSlider->sliderPosition()/100.;
-    p.k =  ui-> kHorizontalSlider->sliderPosition()/100.;
-    p.m =  ui-> mHorizontalSlider->sliderPosition()/100.;
+    if (ui->dampingCheckBox->isChecked())
+        p.b =  pow10( ui->bHorizontalSlider->sliderPosition()/100.);
+    else
+        p.b = 0.0;
+    if (ui->forceCheckBox->isChecked()) {
+        p.F0 = ui->f0HorizontalSlider->sliderPosition()/100.;
+        p.w0 = ui->w0HorizontalSlider->sliderPosition()/100.;
+    } else {
+        p.F0 = 0.0;
+        p.w0 = 0.0;
+    }
+        p.k =  ui-> kHorizontalSlider->sliderPosition()/100.;
+        p.m =  ui-> mHorizontalSlider->sliderPosition()/100.;
     p.Dt = pow10( ui->dtHorizontalSlider->sliderPosition()/10.);
-    p.algorithm = EULER;
 
-    ui->visualisationWidget->resetSimulation(p);
+    switch (ui->algorithmComboBox->currentIndex())
+    {
+    default : p.algorithm = EULER;
+    }
+
+    // text
+    ui->x0Label->setText( QString( "x0 = %1").arg(p.x));
 }

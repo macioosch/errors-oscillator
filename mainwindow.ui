@@ -25,6 +25,37 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Algorithm:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="algorithmComboBox">
+        <item>
+         <property name="text">
+          <string>Euler</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Velocity Verlet</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Verlet Leap-Frog</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Runge-Kutta 4th order</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,1">
         <item>
          <widget class="QLabel" name="dtLabel">
