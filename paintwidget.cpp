@@ -1,5 +1,4 @@
 #include <math.h>
-#include <QPainter>
 #include "paintwidget.h"
 
 PaintWidget::PaintWidget(QWidget *parent) :
@@ -9,7 +8,7 @@ PaintWidget::PaintWidget(QWidget *parent) :
 
 void PaintWidget::paintEvent(QPaintEvent *)
 {
-    QPainter painter( this);
+    QPainter painter(this);
 
     // brush and colors:
     static QPalette palette;
@@ -17,6 +16,11 @@ void PaintWidget::paintEvent(QPaintEvent *)
     painter.setRenderHint( QPainter::Antialiasing, true);
     painter.setPen( QPen( Qt::black, 0.0));
 
+    paintVisualisation( painter);
+}
+
+void PaintWidget::paintVisualisation(QPainter &painter)
+{
     painter.translate( width()/2., height()/2.);
     double scale = height()/4.0;
     painter.scale( scale, scale);
