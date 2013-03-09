@@ -27,7 +27,7 @@ void PaintWidget::paintEvent(QPaintEvent *)
     painter.setPen( QPen( Qt::black, 0.0));
 
     painter.translate( width()/2., height()/2.);
-    double scale = std::min( width(), height()) /2.02;
+    double scale = height()/4.0;
     painter.scale( scale, scale);
 
     painter.drawEllipse( QPointF(0.0, sim.p.x), 0.2, 0.2);
@@ -65,7 +65,7 @@ QVector <QPointF> springGenerator(int n)
     s += QPointF(0,0);
     for (int i=1; i<n-1; i++)
     {
-        tempPoint = QPointF( 0.5*pow(-1,i), i/(n-1.));
+        tempPoint = QPointF( 0.5*pow(-1,i), (i-0.5)/(n-2.0));
         s += tempPoint;
         s += tempPoint;
     }

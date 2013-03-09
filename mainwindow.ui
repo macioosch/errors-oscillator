@@ -245,6 +245,9 @@
         </item>
         <item>
          <widget class="QSlider" name="f0HorizontalSlider">
+          <property name="minimum">
+           <number>1</number>
+          </property>
           <property name="maximum">
            <number>200</number>
           </property>
@@ -312,9 +315,12 @@
        <attribute name="title">
         <string>Visualisation</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,3">
         <item>
          <widget class="PaintWidget" name="visualisationWidget" native="true"/>
+        </item>
+        <item>
+         <widget class="QWidget" name="timeGraphWidget" native="true"/>
         </item>
        </layout>
       </widget>

@@ -57,20 +57,20 @@ void MainWindow::updateLabels()
     p.t = 0;
     p.x =  ui->x0HorizontalSlider->sliderPosition()/100.;
     p.v =  ui->v0HorizontalSlider->sliderPosition()/100.;
+    p.k =  ui-> kHorizontalSlider->sliderPosition()/100.;
+    p.m =  ui-> mHorizontalSlider->sliderPosition()/100.;
+    p.Dt = pow10( ui->dtHorizontalSlider->sliderPosition()/10.);
     if (ui->dampingCheckBox->isChecked())
         p.b =  pow10( ui->bHorizontalSlider->sliderPosition()/100.);
     else
         p.b = 0.0;
     if (ui->forceCheckBox->isChecked()) {
         p.F0 = ui->f0HorizontalSlider->sliderPosition()/100.;
-        p.w0 = ui->w0HorizontalSlider->sliderPosition()/100.;
+        p.w0 = ui->w0HorizontalSlider->sliderPosition() *sqrt(p.k/p.m)/100.;
     } else {
         p.F0 = 0.0;
         p.w0 = 0.0;
     }
-        p.k =  ui-> kHorizontalSlider->sliderPosition()/100.;
-        p.m =  ui-> mHorizontalSlider->sliderPosition()/100.;
-    p.Dt = pow10( ui->dtHorizontalSlider->sliderPosition()/10.);
 
     switch (ui->algorithmComboBox->currentIndex())
     {
