@@ -81,12 +81,12 @@ void MainWindow::updateLabels()
     }
 
     // text
-    ui->x0Label->setText( QString( "x0 = %1").arg(p.x));
-    ui->v0Label->setText( QString( "v0 = %1").arg(p.v));
-    ui-> bLabel->setText( QString(  "b = %1").arg(p.b));
-    ui->f0Label->setText( QString( "f0 = %1").arg(p.F0));
-    ui->w0Label->setText( QString( "w0 = %1").arg(p.w0));
-    ui-> kLabel->setText( QString(  "k = %1").arg(p.k));
-    ui-> mLabel->setText( QString(  "m = %1").arg(p.m));
-    ui->dtLabel->setText( QString( "dt = %1").arg(p.Dt));
+    ui->x0Label->setText( QString( "x0 = %L1").arg(p.x,  0, 'f', 2));
+    ui->v0Label->setText( QString( "v0 = %L1").arg(p.v,  0, 'f', 2));
+    ui-> bLabel->setText( QString(  "b = %L1").arg(p.b,  0, 'e', 1));
+    ui->f0Label->setText( QString( "f0 = %L1").arg(p.F0, 0, 'f', 2));
+    ui->w0Label->setText( QString( "w0 = %L1").arg(p.w0, 0, 'f', 2));
+    ui-> kLabel->setText( QString(  "k = %L1").arg(p.k,  0, 'f', 2));
+    ui-> mLabel->setText( QString(  "m = %L1").arg(p.m,  0, 'f', 2));
+    ui->dtLabel->setText( QString( "dt = %L1").arg(p.Dt, 0, 'e', 1));
 }
