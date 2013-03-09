@@ -19,12 +19,17 @@ public:
 private:
     Ui::MainWindow *ui;
     parameters p;
+    Simulation sim;
+    QTimer *plotTimer, *simTimer;
 
 private slots:
     void toggleDamping(bool value);
     void toggleForce(bool value);
     void resetSimulation();
     void updateLabels();
+    void simulate();
+    void tabChanged(int currentTab);
+    void updatePaintWidgets();
 };
 
 #endif // MAINWINDOW_H

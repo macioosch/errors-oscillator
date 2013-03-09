@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->dampingCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggleDamping(bool)));
     connect(ui->forceCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggleForce(bool)));
     connect(ui->resetPushButton, SIGNAL(clicked()), this, SLOT(updateLabels()));
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), ui->visualisationWidget, SLOT(tabChanged(int)));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
     connect(ui->x0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
     connect(ui->v0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
@@ -23,6 +23,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->dtHorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
 
     updateLabels();
+
+    plotTimer = new QTimer(this);
+    connect(plotTimer, SIGNAL(timeout()), this, SLOT(updatePaintWidgets()));
+    // a magic number - this should be changable in the GUI
+    plotTimer->start(15);
+
+    simTimer = new QTimer(this);
+    connect(simTimer, SIGNAL(timeout()), this, SLOT(simulate()));
+    // a magic number (10) - how to get rid of it?!
+    simTimer->start(10);
 }
 
 MainWindow::~MainWindow()
@@ -48,7 +58,7 @@ void MainWindow::toggleForce(bool value)
 
 void MainWindow::resetSimulation()
 {
-    ui->visualisationWidget->resetSimulation(p);
+    sim.reset(p);
 }
 
 void MainWindow::updateLabels()
@@ -88,4 +98,28 @@ void MainWindow::updateLabels()
     ui->dtLabel->setText( QString( "dt = %L1").arg(p.Dt, 0, 'e', 1));
 
     resetSimulation();
+}
+
+void MainWindow::simulate()
+{
+    sim.step();
+}
+
+void MainWindow::tabChanged(int currentTab)
+{
+    if (currentTab == 0 && ! plotTimer->isActive())
+        plotTimer->start();
+    if (currentTab != 0 && plotTimer->isActive())
+        plotTimer->stop();
+}
+
+void MainWindow::updatePaintWidgets()
+{
+    switch (ui->tabWidget->currentIndex())
+    {
+    case 0: { ui->visualisationWidget->p = sim.p;
+              ui->visualisationWidget->update();
+              ui->timeGraphWidget->update();
+            }
+    }
 }
