@@ -8,14 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->dampingCheckBox, SIGNAL(clicked(bool)),
-            this, SLOT(toggleDamping(bool)));
-    connect(ui->forceCheckBox, SIGNAL(clicked(bool)),
-            this, SLOT(toggleForce(bool)));
-    connect(ui->resetPushButton, SIGNAL(clicked()),
-            this, SLOT(resetSimulation()));
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)),
-            ui->visualisationWidget, SLOT(tabChanged(int)));
+    connect(ui->dampingCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggleDamping(bool)));
+    connect(ui->forceCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggleForce(bool)));
+    connect(ui->resetPushButton, SIGNAL(clicked()), this, SLOT(updateLabels()));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), ui->visualisationWidget, SLOT(tabChanged(int)));
 
     connect(ui->x0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
     connect(ui->v0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
@@ -27,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->dtHorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
 
     updateLabels();
-    resetSimulation();
 }
 
 MainWindow::~MainWindow()
@@ -39,6 +34,7 @@ void MainWindow::toggleDamping(bool value)
 {
     ui->bLabel->setEnabled(value);
     ui->bHorizontalSlider->setEnabled(value);
+    updateLabels();
 }
 
 void MainWindow::toggleForce(bool value)
@@ -47,6 +43,7 @@ void MainWindow::toggleForce(bool value)
     ui->f0HorizontalSlider->setEnabled(value);
     ui->w0Label->setEnabled(value);
     ui->w0HorizontalSlider->setEnabled(value);
+    updateLabels();
 }
 
 void MainWindow::resetSimulation()
@@ -89,4 +86,6 @@ void MainWindow::updateLabels()
     ui-> kLabel->setText( QString(  "k = %L1").arg(p.k,  0, 'f', 2));
     ui-> mLabel->setText( QString(  "m = %L1").arg(p.m,  0, 'f', 2));
     ui->dtLabel->setText( QString( "dt = %L1").arg(p.Dt, 0, 'e', 1));
+
+    resetSimulation();
 }
