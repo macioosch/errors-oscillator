@@ -5,7 +5,7 @@
 *.swp
 
 # Qt
-*.pro.user
+*.pro.user*
 moc_*
 ui_*
 

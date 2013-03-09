@@ -18,6 +18,13 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->visualisationWidget, SLOT(tabChanged(int)));
 
     connect(ui->x0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+    connect(ui->v0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+    connect(ui-> bHorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+    connect(ui->f0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+    connect(ui->w0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+    connect(ui-> kHorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+    connect(ui-> mHorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
+    connect(ui->dtHorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
 
     updateLabels();
     resetSimulation();
@@ -75,4 +82,11 @@ void MainWindow::updateLabels()
 
     // text
     ui->x0Label->setText( QString( "x0 = %1").arg(p.x));
+    ui->v0Label->setText( QString( "v0 = %1").arg(p.v));
+    ui-> bLabel->setText( QString(  "b = %1").arg(p.b));
+    ui->f0Label->setText( QString( "f0 = %1").arg(p.F0));
+    ui->w0Label->setText( QString( "w0 = %1").arg(p.w0));
+    ui-> kLabel->setText( QString(  "k = %1").arg(p.k));
+    ui-> mLabel->setText( QString(  "m = %1").arg(p.m));
+    ui->dtLabel->setText( QString( "dt = %1").arg(p.Dt));
 }
