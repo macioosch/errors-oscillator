@@ -18,13 +18,15 @@ SOURCES += main.cpp\
     simulation.cpp \
     qcustomplot.cpp \
     timeplot.cpp \
-    phaseplot.cpp
+    phaseplot.cpp \
+    errorplot.cpp
 
 HEADERS  += mainwindow.h \
     paintwidget.h \
     simulation.h \
     qcustomplot.h \
     timeplot.h \
-    phaseplot.h
+    phaseplot.h \
+    errorplot.h
 
 FORMS    += mainwindow.ui

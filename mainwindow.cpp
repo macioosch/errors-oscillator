@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 #include "timeplot.h"
 #include "phaseplot.h"
+#include "errorplot.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -65,6 +66,7 @@ void MainWindow::resetSimulation()
     sim.reset(p);
     timePlotReset();
     phasePlotReset();
+    errorPlotReset();
     savedDataPoints = 0;
     enoughDataPoints = false;
 }
@@ -118,18 +120,19 @@ void MainWindow::simulate()
     {
         timeUpdateData( sim.p);
         phaseUpdateData( sim.p);
+        errorUpdateData( sim.p);
     }
 }
 
 void MainWindow::updatePaintWidgets()
 {
-    if (!enoughDataPoints)
-        switch (ui->tabWidget->currentIndex())
-        {
-        case 0: { ui->visualisationWidget->p = sim.p;
-            ui->visualisationWidget->update();
-            timePlot( ui->timePlot);
-        }
-        case 1: phasePlot( ui->phasePlot);
-        }
+    switch (ui->tabWidget->currentIndex())
+    {
+    case 0: { ui->visualisationWidget->p = sim.p;
+        ui->visualisationWidget->update();
+        timePlot( ui->timePlot);
+    }
+    case 1: phasePlot( ui->phasePlot);
+    case 2: errorPlot( ui->errorPlot);
+    }
 }
