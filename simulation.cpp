@@ -28,14 +28,17 @@ void Simulation::step()
 
     double x1, v1;
 
-    switch (p.algorithm)
+    for (int i=0; i<1e4; i++)
     {
-    case EULER: euler( p.t, p.x, p.v, acceleration, x1, v1);
-    }
+        switch (p.algorithm)
+        {
+        case EULER: euler( p.t, p.x, p.v, acceleration, x1, v1);
+        }
 
-    p.v = v1;
-    p.x = x1;
-    p.t += p.Dt;
+        p.v = v1;
+        p.x = x1;
+        p.t += p.Dt;
+    }
 
     simulationLock = false;
 }

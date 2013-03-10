@@ -8,6 +8,7 @@
 *.pro.user*
 moc_*
 ui_*
+*.autosave
 
 # this project
 oscillator-errors

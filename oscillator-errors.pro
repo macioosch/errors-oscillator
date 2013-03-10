@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = oscillator-errors
 TEMPLATE = app
@@ -15,10 +15,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     paintwidget.cpp \
-    simulation.cpp
+    simulation.cpp \
+    qcustomplot.cpp \
+    timeplot.cpp \
+    phaseplot.cpp
 
 HEADERS  += mainwindow.h \
     paintwidget.h \
-    simulation.h
+    simulation.h \
+    qcustomplot.h \
+    timeplot.h \
+    phaseplot.h
 
 FORMS    += mainwindow.ui

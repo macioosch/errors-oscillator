@@ -28,7 +28,6 @@ private slots:
     void resetSimulation();
     void updateLabels();
     void simulate();
-    void tabChanged(int currentTab);
     void updatePaintWidgets();
 };
 
