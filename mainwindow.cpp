@@ -25,10 +25,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     updateLabels();
 
+    savedDataPoints = 0;
+    enoughDataPoints = false;
+
     plotTimer = new QTimer(this);
     connect(plotTimer, SIGNAL(timeout()), this, SLOT(updatePaintWidgets()));
     // a magic number - this should be changable in the GUI
-    plotTimer->start(15);
+    plotTimer->start(50);
 
     simTimer = new QTimer(this);
     connect(simTimer, SIGNAL(timeout()), this, SLOT(simulate()));
@@ -62,6 +65,8 @@ void MainWindow::resetSimulation()
     sim.reset(p);
     timePlotReset();
     phasePlotReset();
+    savedDataPoints = 0;
+    enoughDataPoints = false;
 }
 
 void MainWindow::updateLabels()
@@ -106,19 +111,25 @@ void MainWindow::updateLabels()
 void MainWindow::simulate()
 {
     sim.step();
+
+    const int maxPoints = 0x4000;
+    if (savedDataPoints++ > maxPoints) enoughDataPoints = true;
+    if (!enoughDataPoints)
+    {
+        timeUpdateData( sim.p);
+        phaseUpdateData( sim.p);
+    }
 }
 
 void MainWindow::updatePaintWidgets()
 {
-    timeUpdateData( sim.p);
-    phaseUpdateData( sim.p);
-
-    switch (ui->tabWidget->currentIndex())
-    {
-    case 0: { ui->visualisationWidget->p = sim.p;
-              ui->visualisationWidget->update();
-              timePlot( ui->timePlot);
-            }
-    case 1: phasePlot( ui->phasePlot);
-    }
+    if (!enoughDataPoints)
+        switch (ui->tabWidget->currentIndex())
+        {
+        case 0: { ui->visualisationWidget->p = sim.p;
+            ui->visualisationWidget->update();
+            timePlot( ui->timePlot);
+        }
+        case 1: phasePlot( ui->phasePlot);
+        }
 }

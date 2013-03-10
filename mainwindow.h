@@ -21,6 +21,8 @@ private:
     parameters p;
     Simulation sim;
     QTimer *plotTimer, *simTimer;
+    int savedDataPoints;
+    bool enoughDataPoints;
 
 private slots:
     void toggleDamping(bool value);

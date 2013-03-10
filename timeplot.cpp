@@ -1,8 +1,6 @@
 #include "timeplot.h"
-#define MAXPOINTS 0x1000
 
-static QVector <double> t(MAXPOINTS), x(MAXPOINTS);
-static int points = 0;
+static QVector <double> t, x;
 
 void timePlot(QCustomPlot *plt)
 {
@@ -16,28 +14,20 @@ void timePlot(QCustomPlot *plt)
         plt->yAxis->setRange(-2, 2);
     }
 
-    if (points < MAXPOINTS)
-    {
-        plt->graph(0)->clearData();
-        plt->graph(0)->setData( t, x);
-        plt->xAxis->setRange( 0, t[points-1]);
-        plt->replot();
-    }
+    plt->graph(0)->clearData();
+    plt->graph(0)->setData( t, x);
+    plt->xAxis->setRange( 0, *(t.end()-1));
+    plt->replot();
 }
 
 void timePlotReset()
 {
-    t.fill(0);
-    x.fill(0);
-    points = 0;
+    t.clear();
+    x.clear();
 }
 
 void timeUpdateData(parameters p)
 {
-    if (points < MAXPOINTS)
-    {
-        t[points] = p.t;
-        x[points] = -p.x;
-        points++;
-    }
+    t +=  p.t;
+    x += -p.x;
 }
