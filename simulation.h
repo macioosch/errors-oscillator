@@ -4,7 +4,8 @@
 enum integrator
 {
     EULER,
-    RUNGE_KUTTA_4
+    RUNGE_KUTTA_4,
+    VERLET
 };
 
 typedef struct {

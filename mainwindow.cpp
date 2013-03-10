@@ -101,6 +101,9 @@ void MainWindow::updateLabels()
     case 1:
         p.algorithm = RUNGE_KUTTA_4;
         break;
+    case 2:
+        p.algorithm = VERLET;
+        break;
     default:
         p.algorithm = EULER;
     }

@@ -1,10 +1,11 @@
 #include "simulation.h"
 #include <math.h>
 
-double a(const parameters &p, double x0, double v0, double t0);
-void euler(const parameters &p, double &xf, double &vf);
-void rK4(const parameters &p, double &xf, double &vf);
-
+double    a(const parameters &p, double x0, double v0, double t0);
+void  euler(const parameters &p, double &xf, double &vf);
+void    rK4(const parameters &p, double &xf, double &vf);
+void verlet(const parameters &p, double &xf, double &vf);
+static double xp;
 
 Simulation::Simulation()
 {
@@ -33,6 +34,14 @@ void Simulation::step()
         break;
     case RUNGE_KUTTA_4:
         chosenAlgorithm = rK4;
+        break;
+    case VERLET:
+        xp = p.x;
+        rK4( p, x1, v1);
+        p.v = v1;
+        p.x = x1;
+        p.t += p.Dt;
+        chosenAlgorithm = verlet;
         break;
     }
 
@@ -84,3 +93,11 @@ void rK4(const parameters &p, double &xf, double &vf)
     xf = p.x + (p.Dt/6.0)*(v1 + 2*v2 + 2*v3 + v4);
     vf = p.v + (p.Dt/6.0)*(a1 + 2*a2 + 2*a3 + a4);
 }
+
+void verlet(const parameters &p, double &xf, double &vf)
+{
+    xf = 2*p.x - xp + a(p, p.x, p.v, p.t)*pow(p.Dt,2);
+    vf = (xf - xp)/(2*p.Dt);
+    xp = p.x;
+}
+

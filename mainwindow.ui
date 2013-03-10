@@ -45,7 +45,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Velocity Verlet</string>
+          <string>Verlet</string>
          </property>
         </item>
         <item>
@@ -71,6 +71,9 @@
           </property>
           <property name="maximum">
            <number>-20</number>
+          </property>
+          <property name="pageStep">
+           <number>5</number>
           </property>
           <property name="value">
            <number>-55</number>

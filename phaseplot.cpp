@@ -35,11 +35,14 @@ void phasePlot(QCustomPlot *plt)
         arrow->setHead(QCPLineEnding::esSpikeArrow);
     }
 
-    vx->clearData();
-    vx->setData( x, v);
-    textLabel->position->setCoords(x[0]-0.3,v[0]+0.2);
-    arrow->end->setCoords(x[0],v[0]);
-    plt->replot();
+    if (!x.empty())
+    {
+        vx->clearData();
+        vx->setData( x, v);
+        textLabel->position->setCoords(x[0]-0.3,v[0]+0.2);
+        arrow->end->setCoords(x[0],v[0]);
+        plt->replot();
+    }
 }
 
 void phasePlotReset()

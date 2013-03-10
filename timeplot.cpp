@@ -14,10 +14,13 @@ void timePlot(QCustomPlot *plt)
         plt->yAxis->setRange(-2, 2);
     }
 
-    plt->graph(0)->clearData();
-    plt->graph(0)->setData( t, x);
-    plt->xAxis->setRange( 0, *(t.end()-1));
-    plt->replot();
+    if (!t.empty())
+    {
+        plt->graph(0)->clearData();
+        plt->graph(0)->setData( t, x);
+        plt->xAxis->setRange( 0, *(t.end()-1));
+        plt->replot();
+    }
 }
 
 void timePlotReset()
