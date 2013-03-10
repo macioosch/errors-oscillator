@@ -1,7 +1,7 @@
 #include "errorplot.h"
 
 static QVector <double> t, dE, sKwDE, stDevE;
-static double minE = 0.0, maxE = 0.0;
+static double maxE = 0.0;
 
 void errorPlot(QCustomPlot *plt)
 {
@@ -13,7 +13,7 @@ void errorPlot(QCustomPlot *plt)
         plt->addGraph();
         plt->xAxis->setLabel("t");
         plt->yAxis->setLabel("E");
-        plt->graph(0)->setName("DE/E0 - 1");
+        plt->graph(0)->setName("|DE/E0 - 1|");
         plt->graph(1)->setName("sqrt(<(DE/E0 - 1)^2>)");
         plt->graph(1)->setPen(QPen(Qt::red));
         plt->legend->setVisible(true);
@@ -22,15 +22,14 @@ void errorPlot(QCustomPlot *plt)
 
     if (!dE.empty())
     {
-        minE = std::min( minE, std::min( dE.last(), stDevE.last() ));
         maxE = std::max( maxE, std::max( dE.last(), stDevE.last() ));
 
         plt->graph(0)->clearData();
         plt->graph(1)->clearData();
         plt->graph(0)->setData( t, dE);
         plt->graph(1)->setData( t, stDevE);
-        plt->xAxis->setRange( 0, t.last());
-        plt->yAxis->setRange( minE, maxE);
+        plt->xAxis->setRange( 0.0, t.last());
+        plt->yAxis->setRange( 0.0, maxE);
         plt->replot();
     }
 }
@@ -52,10 +51,9 @@ void errorUpdateData(parameters p)
         dE += 0.0;
         sKwDE += 0.0;
         stDevE += 0.0;
-        minE = 0.0;
         maxE = 0.0;
     } else {
-        dE += 0.5*(p.k*pow( p.x, 2) + p.m*pow( p.v, 2))/e0 - 1.0;
+        dE += fabs( 0.5*(p.k*pow( p.x, 2) + p.m*pow( p.v, 2))/e0 - 1.0);
         sKwDE += sKwDE.last() + pow( dE.last(), 2);
         stDevE += sqrt( sKwDE.last() /sKwDE.size());
     }

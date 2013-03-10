@@ -40,17 +40,17 @@
         </item>
         <item>
          <property name="text">
+          <string>Runge-Kutta 4th order</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Velocity Verlet</string>
          </property>
         </item>
         <item>
          <property name="text">
           <string>Verlet Leap-Frog</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Runge-Kutta 4th order</string>
          </property>
         </item>
        </widget>
@@ -309,7 +309,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -343,11 +343,6 @@
          <widget class="QCustomPlot" name="errorPlot" native="true"/>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="tab_4">
-       <attribute name="title">
-        <string>Error versus timestep</string>
-       </attribute>
       </widget>
      </widget>
     </item>

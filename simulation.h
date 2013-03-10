@@ -3,7 +3,8 @@
 
 enum integrator
 {
-    EULER
+    EULER,
+    RUNGE_KUTTA_4
 };
 
 typedef struct {
@@ -28,9 +29,6 @@ public:
     void step();
 
 private:
-    static double acceleration(parameters p, double t0, double x0, double v0);
-    void euler(double t0, double x0, double v0,
-               double (*a)(parameters, double, double, double), double &x1, double &v1);
     bool simulationLock;
 };
 

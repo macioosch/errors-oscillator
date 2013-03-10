@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->dampingCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggleDamping(bool)));
     connect(ui->forceCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggleForce(bool)));
     connect(ui->resetPushButton, SIGNAL(clicked()), this, SLOT(updateLabels()));
+    connect(ui->algorithmComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLabels()));
 
     connect(ui->x0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
     connect(ui->v0HorizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(updateLabels()));
@@ -32,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     plotTimer = new QTimer(this);
     connect(plotTimer, SIGNAL(timeout()), this, SLOT(updatePaintWidgets()));
     // a magic number - this should be changable in the GUI
-    plotTimer->start(50);
+    plotTimer->start(30);
 
     simTimer = new QTimer(this);
     connect(simTimer, SIGNAL(timeout()), this, SLOT(simulate()));
     // a magic number (10) - how to get rid of it?!
-    simTimer->start(10);
+    simTimer->start(5);
 }
 
 MainWindow::~MainWindow()
@@ -94,7 +95,14 @@ void MainWindow::updateLabels()
 
     switch (ui->algorithmComboBox->currentIndex())
     {
-    default : p.algorithm = EULER;
+    case 0:
+        p.algorithm = EULER;
+        break;
+    case 1:
+        p.algorithm = RUNGE_KUTTA_4;
+        break;
+    default:
+        p.algorithm = EULER;
     }
 
     // text
@@ -128,11 +136,16 @@ void MainWindow::updatePaintWidgets()
 {
     switch (ui->tabWidget->currentIndex())
     {
-    case 0: { ui->visualisationWidget->p = sim.p;
+    case 0:
+        ui->visualisationWidget->p = sim.p;
         ui->visualisationWidget->update();
         timePlot( ui->timePlot);
-    }
-    case 1: phasePlot( ui->phasePlot);
-    case 2: errorPlot( ui->errorPlot);
+        break;
+    case 1:
+        phasePlot( ui->phasePlot);
+        break;
+    case 2:
+        errorPlot( ui->errorPlot);
+        break;
     }
 }
