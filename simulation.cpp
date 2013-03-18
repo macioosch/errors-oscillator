@@ -5,7 +5,9 @@ double    a(const parameters &p, double x0, double v0, double t0);
 void  euler(const parameters &p, double &xf, double &vf);
 void    rK4(const parameters &p, double &xf, double &vf);
 void verlet(const parameters &p, double &xf, double &vf);
-static double xp;
+void verletLeapFrog(const parameters &p, double &xf, double &vf);
+void verletVelocity(const parameters &p, double &xf, double &vf);
+static double xp, vp;
 
 Simulation::Simulation()
 {
@@ -42,6 +44,17 @@ void Simulation::step()
         p.x = x1;
         p.t += p.Dt;
         chosenAlgorithm = verlet;
+        break;
+    case VERLET_LEAP_FROG:
+        vp = p.v;
+        rK4( p, x1, v1);
+        p.v = v1;
+        p.x = x1;
+        p.t += p.Dt;
+        chosenAlgorithm = verletLeapFrog;
+        break;
+    case VERLET_VELOCITY:
+        chosenAlgorithm = verletVelocity;
         break;
     }
 
@@ -101,3 +114,16 @@ void verlet(const parameters &p, double &xf, double &vf)
     xp = p.x;
 }
 
+void verletLeapFrog(const parameters &p, double &xf, double &vf)
+{
+    vp += p.Dt*a(p, p.x, p.v, p.t);
+    xf = p.x + p.Dt*vp;
+    vf = vp;
+}
+
+void verletVelocity(const parameters &p, double &xf, double &vf)
+{
+    double a0 = a(p, p.x, p.v, p.t);
+    xf = p.x + p.v*p.Dt + 0.5*a0*pow(p.Dt,2);
+    vf = p.v + 0.5*p.Dt*(a0 + a(p, xf, p.v, p.t+p.Dt));
+}

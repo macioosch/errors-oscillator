@@ -5,7 +5,9 @@ enum integrator
 {
     EULER,
     RUNGE_KUTTA_4,
-    VERLET
+    VERLET,
+    VERLET_LEAP_FROG,
+    VERLET_VELOCITY
 };
 
 typedef struct {

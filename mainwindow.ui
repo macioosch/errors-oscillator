@@ -53,6 +53,11 @@
           <string>Verlet Leap-Frog</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Velocity Verlet</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -196,7 +201,7 @@
          <string>Damping</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -233,7 +238,7 @@
          <string>Force</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

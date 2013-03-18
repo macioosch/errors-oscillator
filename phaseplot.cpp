@@ -8,6 +8,7 @@ void phasePlot(QCustomPlot *plt)
     static QCPCurve *vx, *vx0;
     static QCPItemText *textLabel;
     static QCPItemLine *arrow;
+    static const double maxXMag = 2.0, maxVMag = 2.0;
 
     static bool plotadded = false;
     if (!plotadded)
@@ -15,8 +16,8 @@ void phasePlot(QCustomPlot *plt)
         plotadded = true;
         plt->xAxis->setLabel("x");
         plt->yAxis->setLabel("v");
-        plt->xAxis->setRange(-2, 2);
-        plt->yAxis->setRange(-2, 2);
+        plt->xAxis->setRange(-maxXMag, maxXMag);
+        plt->yAxis->setRange(-maxVMag, maxVMag);
         plt->xAxis->setAutoTickStep(false);
         plt->yAxis->setAutoTickStep(false);
         plt->xAxis->setTickStep(0.5);
@@ -62,10 +63,12 @@ void phasePlot(QCustomPlot *plt)
         vx0->setData( x0, v0);
 
         plt->graph(0)->clearData();
-        plt->graph(0)->addData( x.last(), v.last() );
+        if (fabs(x.last()) < maxXMag && fabs(v.last()) < maxVMag)
+            plt->graph(0)->addData( x.last(), v.last() );
 
         plt->graph(1)->clearData();
-        plt->graph(1)->addData( x0.last(), v0.last() );
+        if (fabs(x0.last()) < maxXMag && fabs(v0.last()) < maxVMag)
+            plt->graph(1)->addData( x0.last(), v0.last() );
 
         textLabel->position->setCoords(x[0]-0.3,v[0]+0.2);
         arrow->end->setCoords(x[0],v[0]);

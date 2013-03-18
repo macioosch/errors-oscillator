@@ -104,8 +104,14 @@ void MainWindow::updateLabels()
     case 2:
         p.algorithm = VERLET;
         break;
+    case 3:
+        p.algorithm = VERLET_LEAP_FROG;
+        break;
+    case 4:
+        p.algorithm = VERLET_VELOCITY;
+        break;
     default:
-        p.algorithm = EULER;
+        p.algorithm = RUNGE_KUTTA_4;
     }
 
     // text
