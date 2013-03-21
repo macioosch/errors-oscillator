@@ -1,8 +1,8 @@
 #include "errorplot.h"
 
 // time, Energy difference, sum of squares of dE, standard deviation of dE
-static QVector <double> t, dE, sKwDE, stDevE, dx, dv;
-static double maxE = 0.0;
+static QVector <double> t, dE, dx, dv, stDevE, stDevX, stDevV;
+static double sKwDE = 0.0, sKwDX = 0.0, sKwDV = 0.0, maxE = 0.0;
 
 double theoreticalX(double x0, double v0, double b, double k, double m, double t)
 {
@@ -71,7 +71,7 @@ void errorPlot(QCustomPlot *plt)
         plt->graph(0)->setName("|DE/E0 - 1|");
         plt->graph(1)->setName("sqrt(<(DE/E0 - 1)^2>)");
         plt->graph(2)->setName("Error of x");
-        plt->graph(2)->setName("Error of v");
+        plt->graph(3)->setName("Error of v");
         plt->graph(0)->setPen(QPen(Qt::gray));
         plt->graph(1)->setPen(QPen(Qt::red));
         plt->graph(2)->setPen(QPen(Qt::green));
@@ -90,8 +90,8 @@ void errorPlot(QCustomPlot *plt)
         plt->graph(3)->clearData();
         plt->graph(0)->setData( t, dE);
         plt->graph(1)->setData( t, stDevE);
-        plt->graph(2)->setData( t, dx);
-        plt->graph(3)->setData( t, dv);
+        plt->graph(2)->setData( t, stDevX);
+        plt->graph(3)->setData( t, stDevV);
         plt->xAxis->setRange( 0.0, t.last());
         plt->yAxis->setRange( 0.0, maxE);
         plt->replot();
@@ -102,19 +102,26 @@ void errorPlotReset()
 {
     t.clear();
     dE.clear();
-    sKwDE.clear();
     stDevE.clear();
+    stDevX.clear();
+    stDevV.clear();
     dx.clear();
     dv.clear();
+
+    sKwDE = 0.0;
+    sKwDX = 0.0;
+    sKwDV = 0.0;
 }
 
 void errorUpdateData(parameters p)
 {
     static double e0 = 0.0, tx, tv;
+
     tx = theoreticalX(p.x0, p.v0, p.b, p.k, p.m, p.t);
     tv = theoreticalV(p.x0, p.v0, p.b, p.k, p.m, p.t);
     dx += p.x - tx;
     dv += p.v - tv;
+
     if (dE.empty())
     {
         e0 = 0.5*(p.k*pow(p.x,2) + p.m*pow(p.v,2));
@@ -124,12 +131,18 @@ void errorUpdateData(parameters p)
         maxE = 0.0;
     } else {
         if (p.b == 0.0)
-            dE += 0.5*(p.k*pow(p.x,2) + p.m*pow(p.v,2))/e0 - 1.0;
+            dE += fabs( 0.5*(p.k*pow(p.x,2) + p.m*pow(p.v,2))/e0 - 1.0 );
         else
-            dE += (p.k*pow(p.x,2) + p.m*pow(p.v,2))
-                / (p.k*pow(tx, 2) + p.m*pow(tv, 2)) - 1.0;
-        sKwDE += sKwDE.last() + pow( dE.last(), 2);
-        stDevE += sqrt( sKwDE.last() /sKwDE.size());
+            dE += fabs( (p.k*pow(p.x,2) + p.m*pow(p.v,2))
+                      / (p.k*pow(tx, 2) + p.m*pow(tv, 2)) - 1.0 );
+        sKwDE += pow( dE.last(), 2);
+        stDevE += sqrt( sKwDE/dE.size() );
     }
+
+    sKwDX += pow( dx.last(), 2);
+    sKwDV += pow( dv.last(), 2);
+    stDevX += sqrt( sKwDX/dE.size() );
+    stDevV += sqrt( sKwDV/dE.size() );
+
     t += p.t;
 }
