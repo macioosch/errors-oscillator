@@ -75,12 +75,14 @@ void MainWindow::resetSimulation()
 void MainWindow::updateLabels()
 {
     // values
-    p.t = 0;
+    p.t = 0.0;
     p.x =  ui->x0HorizontalSlider->sliderPosition()/100.;
     p.v =  ui->v0HorizontalSlider->sliderPosition()/100.;
     p.k =  ui-> kHorizontalSlider->sliderPosition()/100.;
     p.m =  ui-> mHorizontalSlider->sliderPosition()/100.;
     p.Dt = pow10( ui->dtHorizontalSlider->sliderPosition()/10.);
+    p.x0 = p.x;
+    p.v0 = p.v;
     if (ui->dampingCheckBox->isChecked())
         p.b =  pow10( ui->bHorizontalSlider->sliderPosition()/100.);
     else

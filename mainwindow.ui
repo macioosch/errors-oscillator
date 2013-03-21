@@ -344,7 +344,7 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>Error</string>
+        <string>Errors</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>

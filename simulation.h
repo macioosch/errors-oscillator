@@ -20,6 +20,8 @@ typedef struct {
     double k;
     double m;
     double Dt;
+    double x0;
+    double v0;
     integrator algorithm;
 } parameters;
 
